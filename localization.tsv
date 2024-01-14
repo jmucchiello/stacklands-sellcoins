@@ -1,5 +1,5 @@
 Term	Notes	English
-sellcoinsmod_enable		Allow Coins/Shells to be Sold
-sellcoinsmod_enable_tooltip		Selling coins doesn't do anything. But, if coins are in a stack#with other cards, you cannot sell the stack. Enabling this mod makes#selling stacks with coins in them possible.#Very useful after a Forest raid.
-sellcoinsmod_convert		Selling Coins/Shells Converts Them to Local Currency
-sellcoinsmod_convert_tooltip		Normally, you cannot turn shells into coins on the mainland or turn coins into#shells on the island. Enabling this setting permits the conversion. You cannot#convert coins to shells on the mainland or shells to coins on the island.
+sellcoinsmod_enable		Allow Sale of Coins/Shells
+sellcoinsmod_enable_tooltip		Selling coins doesn't do anything. But, if coins are in a stack with#other cards, you cannot sell the stack. Enabling this mod makes#selling stacks with coins in them possible.#Very useful after a Forest raid.
+sellcoinsmod_convert		Allow Sale of non-Local#   Currency
+sellcoinsmod_convert_tooltip		Normally, you cannot sell shells on the mainland or sell coins#on the island. Enabling this setting turns shells into coins on#the mainland and coins into shells on the island.#This setting only works if the Allow Sale of Coins/Shells#setting is ON.

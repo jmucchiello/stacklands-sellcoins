@@ -31,7 +31,8 @@ namespace SellCoinsModNS
                 TooltipTerm = "sellcoinsmod_enable_tooltip"
             })
             {
-                currentValueColor = Color.blue
+                currentValueColor = Color.blue,
+                FontSize = 25
             };
 
             configConvert = new ConfigEntryBool("sellcoinsmod_convert", Config, false, new ConfigUI()
@@ -40,7 +41,8 @@ namespace SellCoinsModNS
                 TooltipTerm = "sellcoinsmod_convert_tooltip"
             })
             {
-                currentValueColor = Color.blue
+                currentValueColor = Color.blue,
+                FontSize = 25
             };
 
             Config.OnSave += delegate () {
@@ -61,6 +63,34 @@ namespace SellCoinsModNS
         {
             ApplySettings();
             Logger.Log("Ready!");
+        }
+    }
+
+    [HarmonyPatch(typeof(Harvestable), "CanHaveCard")]
+    internal class Harvestable_CanHaveCard
+    {
+        private static void Postfix(Harvestable __instance, ref bool __result, CardData otherCard)
+        {
+            if (__result) return;
+            if (__instance.MyCardType == CardType.Locations && otherCard.MyCardType == CardType.Locations) __result = true;
+            else if (__instance.MyCardType == CardType.Structures && !__instance.IsBuilding && otherCard.MyCardType == CardType.Structures && !__instance.IsBuilding) __result = true;
+        }
+    }
+
+    [HarmonyPatch(typeof(Harvestable), "UpdateCard")]
+    internal class Harvestable_UpdateCard
+    {
+        private static void Postfix(Harvestable __instance)
+        {
+            if (__instance.AllChildrenMatchPredicate(x => x is Harvestable && x.Id == __instance.Id || x is Villager)) return;
+
+            GameCard cardWithStatusInStack = __instance.MyGameCard.GetCardWithStatusInStack();
+            string actionId = __instance.GetActionId("CompleteHarvest");
+            if (cardWithStatusInStack != null && cardWithStatusInStack.TimerRunning && cardWithStatusInStack.TimerActionId == actionId && __instance.AnyChildMatchesPredicate((CardData x) => x is Harvestable))
+            {
+                I.Log($"Harvestable.UpdateCard MATCH");
+                cardWithStatusInStack.CancelTimer(actionId);                
+            }
         }
     }
 }
